@@ -1,0 +1,13 @@
+.Logo {
+  background-color: firebrick;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+.Logo img {
+  height: 80%;
+  padding: 10%;
+  display: block;
+  margin: auto;
+}

@@ -1,5 +1,7 @@
 import React from "react";
 import Auxiliary from "../../../hoc/Auxiliary";
+import Button from '../../UI/Button/Button'
+
 const saveSummary = props => {
   const attributesSummary = Object.keys(props.attributes).map(atKey => {
     return (
@@ -14,8 +16,9 @@ const saveSummary = props => {
       <p>This predator of the night has the following attributes:</p>
       <ul>{attributesSummary}</ul>
       <p>Do you want to save this creature?</p>
-      <button>EMBRACE</button>
-      <button>SPARE</button>
+      <Button btnType='Danger' clicked={props.savingCanceld}>SPARE</Button>
+      <Button btnType='Success'  clicked={props.savingContinue}>EMBRACE</Button>
+      
     </Auxiliary>
   );
 };

@@ -76,6 +76,10 @@ class KindredBuilder extends Component {
     this.setState({ saving: false });
   };
 
+  saveContinueHandler = () => {
+    alert('You Embrace!')
+  }
+
   render() {
     const disabledInfoMin = {
       ...this.state.attributes,
@@ -92,7 +96,11 @@ class KindredBuilder extends Component {
     return (
       <Auxiliary>
         <Modal show={this.state.saving} modalClosed={this.saveCancelHandler}>
-          <SaveSummary attributes={this.state.attributes} />
+          <SaveSummary 
+          attributes={this.state.attributes} 
+          savingCanceld={this.saveCancelHandler}
+          savingContinue={this.saveContinueHandler}
+          />
         </Modal>
         <Kindred attributes={this.state.attributes} />
         <BuildControls
