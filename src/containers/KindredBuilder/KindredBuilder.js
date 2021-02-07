@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import Auxiliary from "../hoc/Auxiliary";
-import Kindred from "../components/Kindred/Kindred";
-import BuildControls from "../components/Kindred/BuildControls/BuildControls";
-import Modal from "../components/UI/Modal/Modal";
-import SaveSummary from "../components/Kindred/SaveSummary/SaveSummary";
+import Auxiliary from "../../hoc/Auxiliary/Auxiliary";
+import Kindred from "../../components/Kindred/Kindred";
+import BuildControls from "../../components/Kindred/BuildControls/BuildControls";
+import Modal from "../../components/UI/Modal/Modal";
+import SaveSummary from "../../components/Kindred/SaveSummary/SaveSummary";
 //TO DO Disable buttons if out of points
 
 const ATTRIBUTES_PRICES = {

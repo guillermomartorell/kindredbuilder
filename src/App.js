@@ -1,6 +1,6 @@
-import Layout from "./components/Layouts/Layout";
+import Layout from "./hoc/Layouts/Layout";
 import React from 'react'
-import KindredBuilder from "./containers/KindredBuilder";
+import KindredBuilder from "./containers/KindredBuilder/KindredBuilder";
 
 
 function App() {
