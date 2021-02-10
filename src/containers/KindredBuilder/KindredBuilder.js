@@ -4,6 +4,9 @@ import Kindred from "../../components/Kindred/Kindred";
 import BuildControls from "../../components/Kindred/BuildControls/BuildControls";
 import Modal from "../../components/UI/Modal/Modal";
 import SaveSummary from "../../components/Kindred/SaveSummary/SaveSummary";
+import Spinner from "../../components/UI/Spinner/Spinner";
+import axios from "../../axios-saved";
+
 //TO DO Disable buttons if out of points
 
 const ATTRIBUTES_PRICES = {
@@ -21,6 +24,7 @@ class KindredBuilder extends Component {
     availablePoints: 7,
     savable: false,
     saving: false,
+    loading: false,
   };
 
   updateSaveState(attributes) {
@@ -77,8 +81,28 @@ class KindredBuilder extends Component {
   };
 
   saveContinueHandler = () => {
-    alert('You Embrace!')
-  }
+    // alert('You Embrace!')
+    this.setState({loading:true})
+    const save = {
+      attributes: this.state.attributes,
+      availablePoints: this.state.availablePoints,
+      player: {
+        name: "GM",
+        address: {
+          street: "Teststreet 1",
+          zipCode: "123456",
+          country: "Uruguay",
+        },
+        email: "test@test.com",
+      },
+      downloadMethod: "smallest",
+    };
+
+    axios
+      .post("/saves.json", save)
+      .then(response => this.setState({loading:false, saving: false}))
+      .catch(error => this.setState({loading:false, saving: false}));
+  };
 
   render() {
     const disabledInfoMin = {
@@ -93,14 +117,20 @@ class KindredBuilder extends Component {
     for (let key in disabledInfoMax) {
       disabledInfoMax[key] = disabledInfoMax[key] >= 5;
     }
+    let saveSummary = (
+      <SaveSummary
+        attributes={this.state.attributes}
+        savingCanceld={this.saveCancelHandler}
+        savingContinue={this.saveContinueHandler}
+      />
+    );
+    if (this.state.loading) {
+      saveSummary = <Spinner />;
+    }
     return (
       <Auxiliary>
         <Modal show={this.state.saving} modalClosed={this.saveCancelHandler}>
-          <SaveSummary 
-          attributes={this.state.attributes} 
-          savingCanceld={this.saveCancelHandler}
-          savingContinue={this.saveContinueHandler}
-          />
+          {saveSummary}
         </Modal>
         <Kindred attributes={this.state.attributes} />
         <BuildControls
