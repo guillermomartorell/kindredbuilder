@@ -5,6 +5,7 @@ import BuildControls from "../../components/Kindred/BuildControls/BuildControls"
 import Modal from "../../components/UI/Modal/Modal";
 import SaveSummary from "../../components/Kindred/SaveSummary/SaveSummary";
 import Spinner from "../../components/UI/Spinner/Spinner";
+import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import axios from "../../axios-saved";
 
 //TO DO Disable buttons if out of points
@@ -16,16 +17,24 @@ const ATTRIBUTES_PRICES = {
 };
 class KindredBuilder extends Component {
   state = {
-    attributes: {
-      str: 1,
-      dex: 1,
-      sta: 1,
-    },
+    attributes: null,
     availablePoints: 7,
     savable: false,
     saving: false,
     loading: false,
+    error: false,
   };
+
+  componentDidMount() {
+    axios
+      .get("https://react-kindred-default-rtdb.firebaseio.com/attributes")
+      .then(response => {
+        this.setState({ attributes: response.data });
+      })
+      .catch(error => {
+        this.setState({ error: true });
+      });
+  }
 
   updateSaveState(attributes) {
     const sum = Object.keys(attributes)
@@ -82,7 +91,7 @@ class KindredBuilder extends Component {
 
   saveContinueHandler = () => {
     // alert('You Embrace!')
-    this.setState({loading:true})
+    this.setState({ loading: true });
     const save = {
       attributes: this.state.attributes,
       availablePoints: this.state.availablePoints,
@@ -100,8 +109,8 @@ class KindredBuilder extends Component {
 
     axios
       .post("/saves.json", save)
-      .then(response => this.setState({loading:false, saving: false}))
-      .catch(error => this.setState({loading:false, saving: false}));
+      .then(response => this.setState({ loading: false, saving: false }))
+      .catch(error => this.setState({ loading: false, saving: false }));
   };
 
   render() {
@@ -117,34 +126,48 @@ class KindredBuilder extends Component {
     for (let key in disabledInfoMax) {
       disabledInfoMax[key] = disabledInfoMax[key] >= 5;
     }
-    let saveSummary = (
-      <SaveSummary
-        attributes={this.state.attributes}
-        savingCanceld={this.saveCancelHandler}
-        savingContinue={this.saveContinueHandler}
-      />
+    let saveSummary = null;
+
+    let kindred = this.state.error ? (
+      <p>Sorry this app isn't working</p>
+    ) : (
+      <Spinner />
     );
-    if (this.state.loading) {
-      saveSummary = <Spinner />;
+    if (this.state.attributes) {
+      kindred = (
+        <>
+          <Kindred attributes={this.state.attributes} />
+          <BuildControls
+            attributesAdded={this.addAttributeHandler}
+            attributesRemoved={this.removeAttributeHandler}
+            disabledMin={disabledInfoMin}
+            disabledMax={disabledInfoMax}
+            savable={this.state.savable}
+            saving={this.saveHandler}
+            availablePoints={this.state.availablePoints}
+          />
+        </>
+      );
+      saveSummary = (
+        <SaveSummary
+          attributes={this.state.attributes}
+          savingCanceld={this.saveCancelHandler}
+          savingContinue={this.saveContinueHandler}
+        />
+      );
+      if (this.state.loading) {
+        saveSummary = <Spinner />;
+      }
     }
     return (
       <Auxiliary>
         <Modal show={this.state.saving} modalClosed={this.saveCancelHandler}>
           {saveSummary}
         </Modal>
-        <Kindred attributes={this.state.attributes} />
-        <BuildControls
-          attributesAdded={this.addAttributeHandler}
-          attributesRemoved={this.removeAttributeHandler}
-          disabledMin={disabledInfoMin}
-          disabledMax={disabledInfoMax}
-          savable={this.state.savable}
-          saving={this.saveHandler}
-          availablePoints={this.state.availablePoints}
-        />
+        {kindred}
       </Auxiliary>
     );
   }
 }
 
-export default KindredBuilder;
+export default withErrorHandler(KindredBuilder, axios);
