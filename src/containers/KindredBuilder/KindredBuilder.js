@@ -27,7 +27,7 @@ class KindredBuilder extends Component {
 
   componentDidMount() {
     axios
-      .get("https://react-kindred-default-rtdb.firebaseio.com/attributes")
+      .get("https://react-kindred-default-rtdb.firebaseio.com/attributes.json")
       .then(response => {
         this.setState({ attributes: response.data });
       })

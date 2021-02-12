@@ -1,0 +1,11 @@
+.KindredSummary{
+    text-align: center;
+    margin: auto;
+    width: 80%;
+}
+
+@media(max-with: 600px){
+    .KindredSummary{
+        width: 500px;
+    }
+}
