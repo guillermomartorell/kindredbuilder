@@ -10,10 +10,10 @@ const kindredSummary = props => {
       <div style={{ width: "100%", margin: "auto" }}>
         <Kindred attributes={props.attributes} />
       </div>
-      <Button btnType="Danger" clicked>
+      <Button btnType="Danger" clicked={props.savedCancelled}>
         CANCEL
       </Button>
-      <Button btnType="Success" clicked>
+      <Button btnType="Success" clicked={props.savedContinue}>
         EMBRACE
       </Button>
     </div>
