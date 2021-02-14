@@ -90,27 +90,7 @@ class KindredBuilder extends Component {
   };
 
   saveContinueHandler = () => {
-    // this.setState({ loading: true });
-    // const save = {
-    //   attributes: this.state.attributes,
-    //   availablePoints: this.state.availablePoints,
-    //   player: {
-    //     name: "GM",
-    //     address: {
-    //       street: "Teststreet 1",
-    //       zipCode: "123456",
-    //       country: "Uruguay",
-    //     },
-    //     email: "test@test.com",
-    //   },
-    //   downloadMethod: "smallest",
-    // };
-
-    // axios
-    //   .post("/saves.json", save)
-    //   .then(response => this.setState({ loading: false, saving: false }))
-    //   .catch(error => this.setState({ loading: false, saving: false }));
-
+    
     const queryParams = [];
     for (let i in this.state.attributes) {
       queryParams.push(
