@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+
 import Auxiliary from "../../hoc/Auxiliary/Auxiliary";
 import Kindred from "../../components/Kindred/Kindred";
 import BuildControls from "../../components/Kindred/BuildControls/BuildControls";
@@ -14,6 +15,8 @@ const ATTRIBUTES_PRICES = {
   str: 1,
   dex: 1,
   sta: 1,
+
+
 };
 class KindredBuilder extends Component {
   state = {
@@ -26,6 +29,7 @@ class KindredBuilder extends Component {
   };
 
   componentDidMount() {
+    console.log(this.props);
     axios
       .get("https://react-kindred-default-rtdb.firebaseio.com/attributes.json")
       .then(response => {
@@ -90,7 +94,6 @@ class KindredBuilder extends Component {
   };
 
   saveContinueHandler = () => {
-    
     const queryParams = [];
     for (let i in this.state.attributes) {
       queryParams.push(
@@ -99,6 +102,7 @@ class KindredBuilder extends Component {
           encodeURIComponent(this.state.attributes[i])
       );
     }
+
     const queryString = queryParams.join("&");
     this.props.history.push({
       pathname: "/saved",
@@ -120,7 +124,6 @@ class KindredBuilder extends Component {
       disabledInfoMax[key] = disabledInfoMax[key] >= 5;
     }
     let saveSummary = null;
-
     let kindred = this.state.error ? (
       <p>Sorry this app isn't working</p>
     ) : (
@@ -128,7 +131,7 @@ class KindredBuilder extends Component {
     );
     if (this.state.attributes) {
       kindred = (
-        <>
+        <Auxiliary>
           <Kindred attributes={this.state.attributes} />
           <BuildControls
             attributesAdded={this.addAttributeHandler}
@@ -139,18 +142,19 @@ class KindredBuilder extends Component {
             saving={this.saveHandler}
             availablePoints={this.state.availablePoints}
           />
-        </>
+        </Auxiliary>
       );
       saveSummary = (
         <SaveSummary
           attributes={this.state.attributes}
+
           savingCanceld={this.saveCancelHandler}
           savingContinue={this.saveContinueHandler}
         />
       );
-      if (this.state.loading) {
-        saveSummary = <Spinner />;
-      }
+    }
+    if (this.state.loading) {
+      saveSummary = <Spinner />;
     }
     return (
       <Auxiliary>

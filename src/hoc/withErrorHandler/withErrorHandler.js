@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+
 import Modal from "../../components/UI/Modal/Modal";
 import Auxiliary from "../Auxiliary/Auxiliary";
 
@@ -7,18 +8,9 @@ const withErrorHandler = (WrappedComponent, axios) => {
     state = {
       error: null,
     };
-    constructor(){
-        super()
+    // constructor() {
+    //   super();
 
-      axios.interceptors.request.use(req => {
-        this.setState({ error: null });
-        return req;
-      });
-      axios.interceptors.response.use(null, error => {
-        this.setState({ error: error });
-      });
-    }
-    // componentDidMount() {
     //   axios.interceptors.request.use(req => {
     //     this.setState({ error: null });
     //     return req;
@@ -27,9 +19,30 @@ const withErrorHandler = (WrappedComponent, axios) => {
     //     this.setState({ error: error });
     //   });
     // }
+
+    componentWillMount() {
+      this.reqInterceptor = axios.interceptors.request.use(req => {
+        this.setState({ error: null });
+        return req;
+      });
+      this.resInterceptor = axios.interceptors.response.use(
+        res => res,
+        error => {
+          this.setState({ error: error });
+        }
+      );
+    }
+
+    componentWillUnmount() {
+      axios.interceptors.request.eject(this.reqInterceptor);
+      axios.interceptors.response.eject(this.resInterceptor);
+    }
+
+
     errorConfirmedHandler = () => {
       this.setState({ error: null });
     };
+
     render() {
       return (
         <Auxiliary>
@@ -37,7 +50,7 @@ const withErrorHandler = (WrappedComponent, axios) => {
             show={this.state.error}
             modalClosed={this.errorConfirmedHandler}
           >
-            {this.state.error ? this.state.error.message : null }
+            {this.state.error ? this.state.error.message : null}
           </Modal>
           <WrappedComponent {...this.props} />
         </Auxiliary>
