@@ -1,13 +1,10 @@
-import * as actionTypes from "./actions";
+import * as actionTypes from "../actions/actionTypes";
 
 const initialState = {
-  attributes: {
-    str: 1,
-    sta: 1,
-    dex: 1,
-
-  },
+  attributes: null,
   availablePoints: 7,
+  error: false,
+  // loading: false,
 };
 
 const ATTRIBUTES_PRICES = {
@@ -36,7 +33,17 @@ const reducer = (state = initialState, action) => {
         },
         availablePoints: state.availablePoints + ATTRIBUTES_PRICES[action.attributeName]
       };
-
+      case actionTypes.SET_ATTRIBUTES:
+        return {
+          ...state, 
+          attributes: action.attributes,
+          error: false
+        }
+      case actionTypes.FETCH_ATTRIBUTES_FAILED:
+        return { 
+          ...state,
+          error: true
+        }
     default:
       return state;
   }

@@ -1,10 +1,13 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
 import Button from "../../../components/UI/Button/Button";
 import Spinner from "../../../components/UI/Spinner/Spinner";
 import classes from "./SavedData.module.css";
 import axios from "../../../axios-saved";
 import Input from "../../../components/UI/Input/Input";
+import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
+import * as saveActions from "../../../store/actions/index";
 
 class SavedData extends Component {
   state = {
@@ -94,30 +97,21 @@ class SavedData extends Component {
       },
     },
     formIsValid: false,
-    loading: false,
   };
 
   saveDataHandler = event => {
     event.preventDefault();
-    this.setState({ loading: true });
+
     const formData = {};
     for (let formEl in this.state.player) {
       formData[formEl] = this.state.player[formEl].value;
     }
     const save = {
-      attributes: this.props.attributes,
+      attributes: this.props.atr,
 
       playerData: formData,
     };
-    axios
-      .post("/saves.json", save)
-      .then(response => {
-        this.setState({ loading: false });
-        this.props.history.push("/");
-      })
-      .catch(error => {
-        this.setState({ loading: false });
-      });
+    this.props.onSaveKindred(save)
   };
 
   checkValidity = (value, rules) => {
@@ -173,7 +167,7 @@ class SavedData extends Component {
     for (let inputIdentifier in updatedPlayerForm) {
       formValid = updatedPlayerForm[inputIdentifier].valid && formValid;
     }
-    this.setState({  player: updatedPlayerForm, formIsValid: formValid });
+    this.setState({ player: updatedPlayerForm, formIsValid: formValid });
   };
 
   render() {
@@ -204,7 +198,7 @@ class SavedData extends Component {
         </Button>
       </form>
     );
-    if (this.state.loading === true) {
+    if (this.props.loading === true) {
       form = <Spinner />;
     }
     return (
@@ -216,4 +210,17 @@ class SavedData extends Component {
   }
 }
 
-export default SavedData;
+const mapStateToProps = state => {
+  return {
+    atr: state.kindredBuilder.attributes,
+    loading: state.save.loading
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onSaveKindred: (orderData) => dispatch(saveActions.saveKindred(orderData)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(SavedData, axios));

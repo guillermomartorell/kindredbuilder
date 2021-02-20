@@ -1,24 +1,11 @@
 import React, { Component } from "react";
+import { Route, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+
 import KindredSummary from "../../components/Overview/KindredSummary/KindredSummary";
 import SavedData from "./SavedData/SavedData";
-import { Route } from "react-router-dom";
 
 class Saved extends Component {
-  state = {
-    attributes: {
-      str: 1,
-      dex: 1,
-      sta: 1,
-    },
-  };
-  componentDidMount() {
-    const query = new URLSearchParams(this.props.location.search);
-    const attributes = {};
-    for (let param of query.entries()) {
-      attributes[param[0]] = +param[1];
-    }
-    this.setState({ attributes: attributes });
-  }
   savedCancelledHandler = () => {
     this.props.history.goBack();
   };
@@ -26,22 +13,30 @@ class Saved extends Component {
     this.props.history.replace("/saved/save-data");
   };
   render() {
-    return (
-      <div>
-        <KindredSummary
-          attributes={this.state.attributes}
-          savedCancelled={this.savedCancelledHandler}
-          savedContinue={this.savedContinueHandler}
-        />
-        <Route
-          path={this.props.match.path + "/save-data"}
-          render={props => (
-            <SavedData attributes={this.state.attributes} {...props} />
-          )}
-        />
-      </div>
-    );
+    let summary = <Redirect to="/" />;
+    if (this.props.atr) {
+      summary = (
+        <div>
+          <KindredSummary
+            attributes={this.props.atr}
+            savedCancelled={this.savedCancelledHandler}
+            savedContinue={this.savedContinueHandler}
+          />
+          <Route
+            path={this.props.match.path + "/save-data"}
+            component={SavedData}
+          />
+        </div>
+      );
+    }
+    return summary;
   }
 }
 
-export default Saved;
+const mapStateToProps = state => {
+  return {
+    atr: state.kindredBuilder.attributes,
+  };
+};
+
+export default connect(mapStateToProps)(Saved);

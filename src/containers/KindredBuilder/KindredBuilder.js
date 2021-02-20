@@ -8,28 +8,19 @@ import Modal from "../../components/UI/Modal/Modal";
 import SaveSummary from "../../components/Kindred/SaveSummary/SaveSummary";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
+import * as kindredBuilderActions from "../../store/actions/index";
 import axios from "../../axios-saved";
-import * as actionTypes from "../../store/actions";
 
 //TO DO Disable buttons if out of points
 
 class KindredBuilder extends Component {
   state = {
     saving: false,
-    loading: false,
-    error: false,
   };
 
   componentDidMount() {
     console.log(this.props);
-    // axios
-    //   .get("https://react-kindred-default-rtdb.firebaseio.com/attributes.json")
-    //   .then(response => {
-    //     this.setState({ attributes: response.data });
-    //   })
-    //   .catch(error => {
-    //     this.setState({ error: true });
-    //   });
+    this.props.onInitAttributes();
   }
 
   updateSaveState(attributes) {
@@ -40,7 +31,7 @@ class KindredBuilder extends Component {
       .reduce((sum, el) => {
         return sum + el;
       }, 0);
-    return sum === 10 ;
+    return sum === 10;
   }
 
   // addAttributeHandler = type => {
@@ -86,20 +77,7 @@ class KindredBuilder extends Component {
   };
 
   saveContinueHandler = () => {
-    const queryParams = [];
-    for (let i in this.props.atr) {
-      queryParams.push(
-        encodeURIComponent(i) +
-          "=" +
-          encodeURIComponent(this.props.atr[i])
-      );
-    }
-
-    const queryString = queryParams.join("&");
-    this.props.history.push({
-      pathname: "/saved",
-      search: "?" + queryString,
-    });
+    this.props.history.push("/saved");
   };
 
   render() {
@@ -116,7 +94,7 @@ class KindredBuilder extends Component {
       disabledInfoMax[key] = disabledInfoMax[key] >= 5;
     }
     let saveSummary = null;
-    let kindred = this.state.error ? (
+    let kindred = this.props.error ? (
       <p>Sorry this app isn't working</p>
     ) : (
       <Spinner />
@@ -140,21 +118,15 @@ class KindredBuilder extends Component {
       saveSummary = (
         <SaveSummary
           attributes={this.props.atr}
-          
           savingCanceld={this.saveCancelHandler}
           savingContinue={this.saveContinueHandler}
         />
       );
     }
-    if (this.state.loading) {
-      saveSummary = <Spinner />;
-    }
+
     return (
       <Auxiliary>
-        <Modal 
-          show={this.state.saving} 
-          modalClosed={this.saveCancelHandler}
-        >
+        <Modal show={this.state.saving} modalClosed={this.saveCancelHandler}>
           {saveSummary}
         </Modal>
         {kindred}
@@ -165,17 +137,19 @@ class KindredBuilder extends Component {
 
 const mapStateToProps = state => {
   return {
-    atr: state.attributes,
-    points: state.availablePoints
+    atr: state.kindredBuilder.attributes,
+    points: state.kindredBuilder.availablePoints,
+    error: state.kindredBuilder.error,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     onAttributeAdded: atName =>
-      dispatch({ type: actionTypes.ADD_ATTRIBUTE, attributeName: atName }),
+      dispatch(kindredBuilderActions.addAttributes(atName)),
     onAttributeRemoved: atName =>
-      dispatch({ type: actionTypes.REMOVE_ATTRIBUTE, attributeName: atName }),
+      dispatch(kindredBuilderActions.removeAttributes(atName)),
+    onInitAttributes: () => dispatch(kindredBuilderActions.initAttributes()),
   };
 };
 
