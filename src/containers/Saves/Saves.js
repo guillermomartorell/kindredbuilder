@@ -1,7 +1,11 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+
 import Overview from "../../components/Overview/Overview";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import axios from "../../axios-saved";
+import * as actions from "../../store/actions/index";
+import Spinner from "../../components/UI/Spinner/Spinner";
 
 class Saves extends Component {
   state = {
@@ -10,31 +14,36 @@ class Saves extends Component {
   };
 
   componentDidMount() {
-    axios
-      .get("/saves.json")
-      .then(res => {
-        const fetchedSaves = [];
-        for (let key in res.data) {
-          fetchedSaves.push({
-            ...res.data[key],
-            id: key,
-          });
-        }
-        this.setState({ loading: false, saves: fetchedSaves });
-        console.log(this.state.saves);
-      })
-      .catch(err => {
-        this.setState({ loading: false });
-      });
+    this.props.onFetchSaves();
   }
+
   render() {
-    return (
-      <div>
-        {this.state.saves.map(save => (
-          <Overview key={save.id} attributes={save.attributes} />
-        ))}
-      </div>
-    );
+    let saves = <Spinner />;
+    if (!this.props.loading) {
+      saves = this.props.saves.map(save => (
+        <Overview key={save.id} attributes={save.attributes} />
+      ));
+    }
+    return <div>
+      {saves}
+    </div>;
   }
 }
-export default withErrorHandler(Saves, axios);
+
+const mapStateToProps = state => {
+  return {
+    saves: state.save.saves,
+    loading: state.save.loading,
+    saved: state.save.saved,
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    onFetchSaves: () => dispatch(actions.fetchSaves()),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withErrorHandler(Saves, axios));

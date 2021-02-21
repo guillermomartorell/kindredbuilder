@@ -8,7 +8,7 @@ import Modal from "../../components/UI/Modal/Modal";
 import SaveSummary from "../../components/Kindred/SaveSummary/SaveSummary";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
-import * as kindredBuilderActions from "../../store/actions/index";
+import * as actions from "../../store/actions/index";
 import axios from "../../axios-saved";
 
 //TO DO Disable buttons if out of points
@@ -77,6 +77,7 @@ class KindredBuilder extends Component {
   };
 
   saveContinueHandler = () => {
+    this.props.onInitSave();
     this.props.history.push("/saved");
   };
 
@@ -145,11 +146,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onAttributeAdded: atName =>
-      dispatch(kindredBuilderActions.addAttributes(atName)),
-    onAttributeRemoved: atName =>
-      dispatch(kindredBuilderActions.removeAttributes(atName)),
-    onInitAttributes: () => dispatch(kindredBuilderActions.initAttributes()),
+    onAttributeAdded: atName => dispatch(actions.addAttributes(atName)),
+    onAttributeRemoved: atName => dispatch(actions.removeAttributes(atName)),
+    onInitAttributes: () => dispatch(actions.initAttributes()),
+    onInitSave: () => dispatch(actions.saveInit()),
   };
 };
 

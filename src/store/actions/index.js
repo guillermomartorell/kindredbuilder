@@ -3,4 +3,4 @@ export {
   removeAttributes,
   initAttributes,
 } from "./kindredBuilder";
-export { saveKindredStart, saveKindred } from "./save";
+export { saveKindredStart, saveKindred, saveInit, fetchSaves } from "./save";

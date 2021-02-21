@@ -34,3 +34,49 @@ export const saveKindred = saveData => {
       });
   };
 };
+
+export const saveInit = () => {
+  return {
+    type: actionTypes.SAVE_INIT,
+  };
+};
+
+export const fetchSaveSuccess = saves => {
+  return {
+    type: actionTypes.FETCH_SAVES_SUCCESS,
+    saves: saves,
+  };
+};
+
+export const fetchSaveFailed = error => {
+  return {
+    type: actionTypes.FETCH_SAVES_FAIL,
+    error: error,
+  };
+};
+
+export const fetchSaveStart = () => {
+  return {
+    type: actionTypes.FETCH_SAVES_START,
+  };
+};
+export const fetchSaves = () => {
+  return dispatch => {
+    dispatch(fetchSaveStart());
+    axios
+      .get("/saves.json")
+      .then(res => {
+        const fetchedSaves = [];
+        for (let key in res.data) {
+          fetchedSaves.push({
+            ...res.data[key],
+            id: key,
+          });
+        }
+        dispatch(fetchSaveSuccess(fetchedSaves));
+      })
+      .catch(err => {
+        dispatch(fetchSaveFailed(err));
+      });
+  };
+};
