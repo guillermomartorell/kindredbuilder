@@ -5,6 +5,7 @@ const initialState = {
   attributes: null,
   availablePoints: 7,
   error: false,
+  building: false,
 };
 
 const ATTRIBUTES_PRICES = {
@@ -22,6 +23,7 @@ const addAttribute = (state, action) => {
     attributes: updatedAttributes,
     availablePoints:
       state.availablePoints - ATTRIBUTES_PRICES[action.attributeName],
+    building: true,
   };
   return updateObject(state, updatedState);
 };
@@ -35,6 +37,7 @@ const removeAttribute = (state, action) => {
     attributes: updatedAtts,
     availablePoints:
       state.availablePoints - ATTRIBUTES_PRICES[action.attributeName],
+    building: true,
   };
   return updateObject(state, updatedSt);
 };
@@ -44,6 +47,7 @@ const setAttributes = (state, action) => {
     attributes: action.attributes,
     availablePoints: 7,
     error: false,
+    building: false,
   });
 };
 

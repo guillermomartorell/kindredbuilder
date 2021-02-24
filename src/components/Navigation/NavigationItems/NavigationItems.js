@@ -5,8 +5,14 @@ import NavigationItem from "./NavigationItem/NavigationItem";
 const navigationItems = props => (
   <ul className={classes.NavigationItems}>
     <NavigationItem link="/">Kindred Builder</NavigationItem>
-    <NavigationItem link="/saves">Saved</NavigationItem>
-    <NavigationItem link="/auth">Authenticate</NavigationItem>
+    {!props.isAuth ? null : (
+      <NavigationItem link="/saves">Saved</NavigationItem>
+    )}
+    {!props.isAuth ? (
+      <NavigationItem link="/auth">Authenticate</NavigationItem>
+    ) : (
+      <NavigationItem link="/logout">Logout</NavigationItem>
+    )}
   </ul>
 );
 export default navigationItems;

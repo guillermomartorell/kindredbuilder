@@ -10,12 +10,14 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import kindredBuilderReducer from "./store/reducers/kindredBuilder";
 import saveReducer from './store/reducers/save'
+import authReducer from './store/reducers/auth'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({
   kindredBuilder : kindredBuilderReducer,
-  save: saveReducer
+  save: saveReducer,
+  auth: authReducer
 })
 
 const store = createStore(rootReducer, composeEnhancers(

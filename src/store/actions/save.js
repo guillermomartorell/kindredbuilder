@@ -20,11 +20,11 @@ export const saveKindredStart = () => {
     type: actionTypes.SAVE_KINDRED_START,
   };
 };
-export const saveKindred = saveData => {
+export const saveKindred = (saveData, token) => {
   return dispatch => {
     dispatch(saveKindredStart());
     axios
-      .post("/saves.json", saveData)
+      .post("/saves.json?auth=" + token, saveData)
       .then(response => {
         console.log(response.data);
         dispatch(saveKindredSuccess(response.data.name, saveData));
@@ -60,11 +60,11 @@ export const fetchSaveStart = () => {
     type: actionTypes.FETCH_SAVES_START,
   };
 };
-export const fetchSaves = () => {
+export const fetchSaves = (token) => {
   return dispatch => {
     dispatch(fetchSaveStart());
     axios
-      .get("/saves.json")
+      .get("/saves.json?auth=" + token )
       .then(res => {
         const fetchedSaves = [];
         for (let key in res.data) {

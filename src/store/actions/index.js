@@ -4,4 +4,4 @@ export {
   initAttributes,
 } from "./kindredBuilder";
 export { saveKindredStart, saveKindred, saveInit, fetchSaves } from "./save";
-export { auth } from "./auth";
+export { auth, logout, setAuthRedirectPath } from "./auth";

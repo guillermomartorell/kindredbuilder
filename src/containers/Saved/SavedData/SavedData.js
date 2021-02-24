@@ -111,7 +111,7 @@ class SavedData extends Component {
 
       playerData: formData,
     };
-    this.props.onSaveKindred(save)
+    this.props.onSaveKindred(save, this.props.token)
   };
 
   checkValidity = (value, rules) => {
@@ -213,13 +213,14 @@ class SavedData extends Component {
 const mapStateToProps = state => {
   return {
     atr: state.kindredBuilder.attributes,
-    loading: state.save.loading
+    loading: state.save.loading,
+    token: state.auth.token
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSaveKindred: (orderData) => dispatch(saveActions.saveKindred(orderData)),
+    onSaveKindred: (orderData, token) => dispatch(saveActions.saveKindred(orderData, token)),
   };
 };
 

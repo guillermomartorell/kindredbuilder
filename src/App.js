@@ -5,6 +5,7 @@ import Saved from "./containers/Saved/Saved";
 import { Route, Switch } from "react-router-dom";
 import Saves from './containers/Saves/Saves'
 import Auth from './containers/Auth/Auth'
+import Logout from "./containers/Auth/Logout/Logout";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/saved" component={Saved} />
           <Route path="/saves" component={Saves} />
           <Route path="/auth" component={Auth} />
+          <Route path="/logout" component={Logout} />
           <Route path="/" exact component={KindredBuilder} />
         </Switch>
       </Layout>

@@ -69,7 +69,12 @@ class KindredBuilder extends Component {
   // };
 
   saveHandler = () => {
-    this.setState({ saving: true });
+    if(this.props.isAuth){
+      this.setState({ saving: true });
+    } else {
+      this.props.onSetAuthRedirectPath('/saved')
+      this.props.history.push('/auth')
+    }
   };
 
   saveCancelHandler = () => {
@@ -113,6 +118,7 @@ class KindredBuilder extends Component {
             savable={this.updateSaveState(this.props.atr)}
             saving={this.saveHandler}
             availablePoints={this.props.points}
+            isAuth={this.props.isAuth}
           />
         </Auxiliary>
       );
@@ -141,6 +147,7 @@ const mapStateToProps = state => {
     atr: state.kindredBuilder.attributes,
     points: state.kindredBuilder.availablePoints,
     error: state.kindredBuilder.error,
+    isAuth: state.auth.token !== null
   };
 };
 
@@ -150,6 +157,7 @@ const mapDispatchToProps = dispatch => {
     onAttributeRemoved: atName => dispatch(actions.removeAttributes(atName)),
     onInitAttributes: () => dispatch(actions.initAttributes()),
     onInitSave: () => dispatch(actions.saveInit()),
+    onSetAuthRedirectPath: (path) => dispatch(actions.setAuthRedirectPath(path))
   };
 };
 

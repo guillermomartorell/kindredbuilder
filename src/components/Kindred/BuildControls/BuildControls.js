@@ -25,7 +25,7 @@ const buildControls = props => (
     ))}
     <button className={classes.SaveButton}
     disabled={!props.savable}
-    onClick={props.saving}>SAVE NOW</button>
+    onClick={props.saving}>{props.isAuth ? "SAVE NOW" : "Log In to Save"}</button>
   </div>
 );
 
