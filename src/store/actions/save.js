@@ -60,11 +60,12 @@ export const fetchSaveStart = () => {
     type: actionTypes.FETCH_SAVES_START,
   };
 };
-export const fetchSaves = (token) => {
+export const fetchSaves = (token, userId) => {
   return dispatch => {
     dispatch(fetchSaveStart());
+    const queryParams = '?auth=' + token + '&orderBy="userId"&equalTo="'+ userId + '"'
     axios
-      .get("/saves.json?auth=" + token )
+      .get("/saves.json" + queryParams )
       .then(res => {
         const fetchedSaves = [];
         for (let key in res.data) {

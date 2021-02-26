@@ -8,6 +8,7 @@ import axios from "../../../axios-saved";
 import Input from "../../../components/UI/Input/Input";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 import * as saveActions from "../../../store/actions/index";
+import { updateObject } from "../../../shared/utility";
 
 class SavedData extends Component {
   state = {
@@ -110,8 +111,9 @@ class SavedData extends Component {
       attributes: this.props.atr,
 
       playerData: formData,
+      userId: this.props.userId,
     };
-    this.props.onSaveKindred(save, this.props.token)
+    this.props.onSaveKindred(save, this.props.token);
   };
 
   checkValidity = (value, rules) => {
@@ -149,19 +151,18 @@ class SavedData extends Component {
     // const updatedPlayerForm = JSON.parse(JSON.stringify(this.state.player));
     // updatedPlayerForm[inputIdentifier].value = event.target.value;
     // this.setState({ player: updatedPlayerForm });
-    const updatedPlayerForm = {
-      ...this.state.player,
-    };
-    const updatedPlayerElem = {
-      ...updatedPlayerForm[inputIdentifier],
-    };
-    updatedPlayerElem.value = event.target.value;
-    updatedPlayerElem.valid = this.checkValidity(
-      updatedPlayerElem.value,
-      updatedPlayerElem.validation
-    );
-    updatedPlayerElem.touched = true;
-    updatedPlayerForm[inputIdentifier] = updatedPlayerElem;
+
+    const updatedPlayerElem = updateObject(this.state.player[inputIdentifier], {
+      value: event.target.value,
+      valid: this.checkValidity(
+        event.target.value,
+        this.state.player[inputIdentifier].validation
+      ),
+      touched: true,
+    });
+    const updatedPlayerForm = updateObject(this.state.player, {
+      [inputIdentifier]: updatedPlayerElem,
+    });
 
     let formValid = true;
     for (let inputIdentifier in updatedPlayerForm) {
@@ -214,14 +215,19 @@ const mapStateToProps = state => {
   return {
     atr: state.kindredBuilder.attributes,
     loading: state.save.loading,
-    token: state.auth.token
+    token: state.auth.token,
+    userId: state.auth.userId,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSaveKindred: (orderData, token) => dispatch(saveActions.saveKindred(orderData, token)),
+    onSaveKindred: (orderData, token) =>
+      dispatch(saveActions.saveKindred(orderData, token)),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(SavedData, axios));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withErrorHandler(SavedData, axios));

@@ -14,7 +14,7 @@ class Saves extends Component {
   };
 
   componentDidMount() {
-    this.props.onFetchSaves(this.props.token);
+    this.props.onFetchSaves(this.props.token, this.props.userId);
   }
 
   render() {
@@ -35,12 +35,13 @@ const mapStateToProps = state => {
     saves: state.save.saves,
     loading: state.save.loading,
     saved: state.save.saved,
-    token: state.auth.token
+    token: state.auth.token,
+    userId: state.auth.userId
   };
 };
 const mapDispatchToProps = dispatch => {
   return {
-    onFetchSaves: (token) => dispatch(actions.fetchSaves(token)),
+    onFetchSaves: (token, userId) => dispatch(actions.fetchSaves(token, userId)),
   };
 };
 
