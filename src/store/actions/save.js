@@ -26,7 +26,7 @@ export const saveKindred = (saveData, token) => {
     axios
       .post("/saves.json?auth=" + token, saveData)
       .then(response => {
-        console.log(response.data);
+        // console.log(response.data);
         dispatch(saveKindredSuccess(response.data.name, saveData));
       })
       .catch(error => {

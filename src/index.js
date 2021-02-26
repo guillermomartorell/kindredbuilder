@@ -9,20 +9,24 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import kindredBuilderReducer from "./store/reducers/kindredBuilder";
-import saveReducer from './store/reducers/save'
-import authReducer from './store/reducers/auth'
+import saveReducer from "./store/reducers/save";
+import authReducer from "./store/reducers/auth";
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancers =
+  process.env.NODE_ENV === "development"
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    : null || compose;
 
 const rootReducer = combineReducers({
-  kindredBuilder : kindredBuilderReducer,
+  kindredBuilder: kindredBuilderReducer,
   save: saveReducer,
-  auth: authReducer
-})
+  auth: authReducer,
+});
 
-const store = createStore(rootReducer, composeEnhancers(
-  applyMiddleware(thunk)
-));
+const store = createStore(
+  rootReducer,
+  composeEnhancers(applyMiddleware(thunk))
+);
 
 const app = (
   <Provider store={store}>
