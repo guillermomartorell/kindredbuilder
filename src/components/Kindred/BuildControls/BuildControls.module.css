@@ -1,6 +1,5 @@
 .BuildControls{
     width :  100%;
-    background-color: orange;
     display: flex;
     flex-flow: column;
     align-items: center;
@@ -9,8 +8,6 @@
     padding: 10px 0;
 
 }
-
-
 
 .SaveButton {
     background-color: #DAD735;

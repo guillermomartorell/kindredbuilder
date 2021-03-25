@@ -1,7 +1,24 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Poppin', sans-serif;
+  font-family: "Poppin", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: black;
+  color: white;
+}
+.sexy_line {
+  height: 1px;
+  width: 100%;
+  position: absolute;
+  background-image: linear-gradient(
+    to right,
+    rgba(255, 0, 0, 0) 5%,
+    rgba(104, 90, 68, 1) 15%,
+    rgba(104, 90, 68, 1) 85%,
+    rgba(255, 0, 0, 0) 95%
+  );
+
+  bottom: -10px;
+  left: 0;
 }

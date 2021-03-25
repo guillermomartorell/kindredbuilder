@@ -54,3 +54,7 @@
     background-color: #99703F;
     color: white;
 }
+input[type="radio"] {
+    display: none;
+}
+  
