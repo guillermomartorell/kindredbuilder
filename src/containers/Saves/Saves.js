@@ -1,34 +1,26 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 
 import Overview from "../../components/Overview/Overview";
-import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import axios from "../../axios-saved";
+import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import * as actions from "../../store/actions/index";
 import Spinner from "../../components/UI/Spinner/Spinner";
 
-class Saves extends Component {
-  state = {
-    saves: [],
-    loading: true,
-  };
+const Saves = props => {
+  const { onFetchSaves, token, userId } = props;
+  useEffect(() => {
+    onFetchSaves(token, userId);
+  }, [onFetchSaves, token, userId]);
 
-  componentDidMount() {
-    this.props.onFetchSaves(this.props.token, this.props.userId);
+  let saves = <Spinner />;
+  if (!props.loading) {
+    saves = props.saves.map(save => (
+      <Overview key={save.id} attributes={save.attributes} />
+    ));
   }
-
-  render() {
-    let saves = <Spinner />;
-    if (!this.props.loading) {
-      saves = this.props.saves.map(save => (
-        <Overview key={save.id} attributes={save.attributes} />
-      ));
-    }
-    return <div>
-      {saves}
-    </div>;
-  }
-}
+  return <div>{saves}</div>;
+};
 
 const mapStateToProps = state => {
   return {
@@ -36,12 +28,13 @@ const mapStateToProps = state => {
     loading: state.save.loading,
     saved: state.save.saved,
     token: state.auth.token,
-    userId: state.auth.userId
+    userId: state.auth.userId,
   };
 };
 const mapDispatchToProps = dispatch => {
   return {
-    onFetchSaves: (token, userId) => dispatch(actions.fetchSaves(token, userId)),
+    onFetchSaves: (token, userId) =>
+      dispatch(actions.fetchSaves(token, userId)),
   };
 };
 

@@ -1,48 +1,44 @@
-import React, { Component } from "react";
+import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
 import KindredSummary from "../../components/Overview/KindredSummary/KindredSummary";
 import SavedData from "./SavedData/SavedData";
-// import * as actions from '../../store/actions/index'
 
-class Saved extends Component {
+const Saved = props => {
+  const savedCancelledHandler = () => {
+    props.history.goBack();
+  };
+  const savedContinueHandler = () => {
+    props.history.replace("/saved/save-data");
+  };
 
-  savedCancelledHandler = () => {
-    this.props.history.goBack();
-  };
-  savedContinueHandler = () => {
-    this.props.history.replace("/saved/save-data");
-  };
-  render() {
-    let summary = <Redirect to="/" />;
-    if (this.props.atr) {
-      const savedRedirect = this.props.saved ? <Redirect to="/" /> : null;
-      summary = (
-        <div>
-          {savedRedirect}
-          <KindredSummary
-            attributes={this.props.atr}
-            savedCancelled={this.savedCancelledHandler}
-            savedContinue={this.savedContinueHandler}
-          />
-          <Route
-            path={this.props.match.path + "/save-data"}
-            component={SavedData}
-          />
-        </div>
-      );
-    }
-    return summary;
+  let summary = <Redirect to="/" />;
+  if (props.atr) {
+    const savedRedirect = props.saved ? <Redirect to="/" /> : null;
+    summary = (
+      <div>
+        {savedRedirect}
+        <KindredSummary
+          attributes={props.atr}
+          savedCancelled={savedCancelledHandler}
+          savedContinue={savedContinueHandler}
+        />
+        <Route
+          path={props.match.path + "/save-data"}
+          component={SavedData}
+        />
+      </div>
+    );
   }
-}
+  return summary;
+};
 
 const mapStateToProps = state => {
   return {
     atr: state.kindredBuilder.attributes,
-    saved: state.save.saved
+    saved: state.save.saved,
   };
 };
-
 
 export default connect(mapStateToProps)(Saved);

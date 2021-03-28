@@ -1,9 +1,10 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 
 import Auxiliary from "../../hoc/Auxiliary/Auxiliary";
 import Kindred from "../../components/Kindred/Kindred";
 import BuildControls from "../../components/Kindred/BuildControls/BuildControls";
+// import { BsFillDropletFill } from "react-icons/bs";
 import Modal from "../../components/UI/Modal/Modal";
 import SaveSummary from "../../components/Kindred/SaveSummary/SaveSummary";
 import Spinner from "../../components/UI/Spinner/Spinner";
@@ -13,17 +14,17 @@ import axios from "../../axios-saved";
 
 //TO DO Disable buttons if out of points
 
-class KindredBuilder extends Component {
-  state = {
-    saving: false,
-  };
+const KindredBuilder = props => {
+  const [saving, setSaving] = useState(false);
+  // const [pointRating, setPointRating] = useState(null);
+  // const [hoverRating, setHoverRating] = useState(null);
 
-  componentDidMount() {
-    // console.log(this.props);
-    this.props.onInitAttributes();
-  }
+  const { onInitAttributes } = props;
+  useEffect(() => {
+    onInitAttributes();
+  }, [onInitAttributes]);
 
-  updateSaveState(attributes) {
+  const updateSaveState = attributes => {
     const sum = Object.keys(attributes)
       .map(atKey => {
         return attributes[atKey];
@@ -32,122 +33,82 @@ class KindredBuilder extends Component {
         return sum + el;
       }, 0);
     return sum === 10;
-  }
+  };
 
-  // addAttributeHandler = type => {
-  //   const oldCount = this.state.attributes[type];
-  //   if (oldCount >= 5) {
-  //     return;
-  //   }
-  //   const updatedCount = oldCount + 1;
-  //   const updatedAttributes = { ...this.state.attributes };
-  //   updatedAttributes[type] = updatedCount;
-  //   const priceAddition = ATTRIBUTES_PRICES[type];
-  //   const oldPrice = this.state.availablePoints;
-  //   if (this.state.availablePoints === 0) {
-  //     return;
-  //   }
-  //   const newPrice = oldPrice - priceAddition;
-  //   this.setState({ availablePoints: newPrice, attributes: updatedAttributes });
-  //   this.updateSaveState(updatedAttributes);
-  // };
-
-  // removeAttributeHandler = type => {
-  //   const oldCount = this.state.attributes[type];
-  //   if (oldCount <= 1) {
-  //     return;
-  //   }
-  //   const updatedCount = oldCount - 1;
-  //   const updatedAttributes = { ...this.state.attributes };
-  //   updatedAttributes[type] = updatedCount;
-  //   const priceDeduction = ATTRIBUTES_PRICES[type];
-  //   const oldPrice = this.state.availablePoints;
-
-  //   const newPrice = oldPrice + priceDeduction;
-  //   this.setState({ availablePoints: newPrice, attributes: updatedAttributes });
-  //   this.updateSaveState(updatedAttributes);
-  // };
-
-  saveHandler = () => {
-    if(this.props.isAuth){
-      this.setState({ saving: true });
+  const saveHandler = () => {
+    if (props.isAuth) {
+      setSaving(true);
     } else {
-      this.props.onSetAuthRedirectPath('/saved')
-      this.props.history.push('/auth')
+      props.onSetAuthRedirectPath("/saved");
+      props.history.push("/auth");
     }
   };
 
-  saveCancelHandler = () => {
-    this.setState({ saving: false });
+  const saveCancelHandler = () => {
+    setSaving(false);
   };
 
-  saveContinueHandler = () => {
-    this.props.onInitSave();
-    this.props.history.push("/saved");
+  const saveContinueHandler = () => {
+    props.onInitSave();
+    props.history.push("/saved");
   };
 
-  render() {
-    const disabledInfoMin = {
-      ...this.props.atr,
-    };
-    for (let key in disabledInfoMin) {
-      disabledInfoMin[key] = disabledInfoMin[key] <= 1;
-    }
-    const disabledInfoMax = {
-      ...this.props.atr,
-    };
-    for (let key in disabledInfoMax) {
-      disabledInfoMax[key] = disabledInfoMax[key] >= 5;
-    }
-    let saveSummary = null;
-    let kindred = this.props.error ? (
-      <p>Sorry this app isn't working</p>
-    ) : (
-      <Spinner />
-    );
+  const disabledInfoMin = {
+    ...props.atr,
+  };
+  for (let key in disabledInfoMin) {
+    disabledInfoMin[key] = disabledInfoMin[key] <= 1;
+  }
+  const disabledInfoMax = {
+    ...props.atr,
+  };
+  for (let key in disabledInfoMax) {
+    disabledInfoMax[key] = disabledInfoMax[key] >= 5;
+  }
+  let saveSummary = null;
+  let kindred = props.error ? <p>Sorry this app isn't working</p> : <Spinner />;
 
-    if (this.props.atr) {
-      kindred = (
-        <Auxiliary>
-          <Kindred attributes={this.props.atr} />
-          <BuildControls
-            attributesAdded={this.props.onAttributeAdded}
-            attributesRemoved={this.props.onAttributeRemoved}
-            disabledMin={disabledInfoMin}
-            disabledMax={disabledInfoMax}
-            savable={this.updateSaveState(this.props.atr)}
-            saving={this.saveHandler}
-            availablePoints={this.props.points}
-            isAuth={this.props.isAuth}
-          />
-        </Auxiliary>
-      );
-      saveSummary = (
-        <SaveSummary
-          attributes={this.props.atr}
-          savingCanceld={this.saveCancelHandler}
-          savingContinue={this.saveContinueHandler}
-        />
-      );
-    }
-
-    return (
+  if (props.atr) {
+    kindred = (
       <Auxiliary>
-        <Modal show={this.state.saving} modalClosed={this.saveCancelHandler}>
-          {saveSummary}
-        </Modal>
-        {kindred}
+        <Kindred attributes={props.atr} />
+        <BuildControls
+          attributesAdded={props.onAttributeAdded}
+          attributesRemoved={props.onAttributeRemoved}
+          disabledMin={disabledInfoMin}
+          disabledMax={disabledInfoMax}
+          savable={updateSaveState(props.atr)}
+          saving={saveHandler}
+          availablePoints={props.points}
+          isAuth={props.isAuth}
+        />
       </Auxiliary>
     );
+    saveSummary = (
+      <SaveSummary
+        attributes={props.atr}
+        savingCanceld={saveCancelHandler}
+        savingContinue={saveContinueHandler}
+      />
+    );
   }
-}
+
+  return (
+    <Auxiliary>
+      <Modal show={saving} modalClosed={saveCancelHandler}>
+        {saveSummary}
+      </Modal>
+      {kindred}
+    </Auxiliary>
+  );
+};
 
 const mapStateToProps = state => {
   return {
     atr: state.kindredBuilder.attributes,
     points: state.kindredBuilder.availablePoints,
     error: state.kindredBuilder.error,
-    isAuth: state.auth.token !== null
+    isAuth: state.auth.token !== null,
   };
 };
 
@@ -157,7 +118,7 @@ const mapDispatchToProps = dispatch => {
     onAttributeRemoved: atName => dispatch(actions.removeAttributes(atName)),
     onInitAttributes: () => dispatch(actions.initAttributes()),
     onInitSave: () => dispatch(actions.saveInit()),
-    onSetAuthRedirectPath: (path) => dispatch(actions.setAuthRedirectPath(path))
+    onSetAuthRedirectPath: path => dispatch(actions.setAuthRedirectPath(path)),
   };
 };
 
