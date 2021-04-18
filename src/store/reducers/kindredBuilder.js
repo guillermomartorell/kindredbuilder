@@ -50,6 +50,20 @@ const setAttributes = (state, action) => {
     building: false,
   });
 };
+const setAttributeValue = (state, action) => {
+  console.log(action.attributeValue)
+  const updatedAttribute = {
+    [action.attributeName]: action.attributeValue
+  };
+  const updatedAttributes = updateObject(state.attributes, updatedAttribute);
+  const updatedState = {
+    attributes: updatedAttributes,
+    availablePoints:
+      state.availablePoints - ATTRIBUTES_PRICES[action.attributeName],
+    building: true,
+  };
+  return updateObject(state, updatedState);
+};
 
 const fetchAttributesFailed = (state, action) => {
   return updateObject(state, { error: true });
@@ -63,6 +77,8 @@ const reducer = (state = initialState, action) => {
       return removeAttribute(state, action);
     case actionTypes.SET_ATTRIBUTES:
       return setAttributes(state, action);
+    case actionTypes.SET_ATTRIBUTES_VALUE:
+      return setAttributeValue(state, action);
     case actionTypes.FETCH_ATTRIBUTES_FAILED:
       return fetchAttributesFailed(state, action);
     default:

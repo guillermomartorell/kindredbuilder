@@ -15,9 +15,9 @@ export const bra = [
   "••••• You could win MMA championships even without the use of your vampiric powers.",
 ];
 export const cra = [
-  "Stamina",
+  "Craft",
   "• You are an amateur, but you know what you are doing.",
-  "•• Your craftsmanship is ad- mired for its functionality.",
+  "•• Your craftsmanship is admired for its functionality.",
   "••• Your creations can be beauti- ful or horrifying, but their intent always clear.",
   "•••• Your skill is highly respected among the kine and Kindred aware of it.",
   "••••• You are often chosen to create the focal point for parties at Elysium.",
@@ -106,7 +106,7 @@ export const lea = [
   "Leadership",
   "• You have led informal clubs before and can organize Kindred of like mind.",
   "•• Your voice makes itself heard in council, and even your superiors sometimes listen.",
-  "••• You can command on the bat- tlefield and lead your soldiers into death.",
+  "••• You can command on the battlefield and lead your soldiers into death.",
   "•••• You can inspire the injured and dying to action, so long as you are there to lead them.",
   "••••• Your words fill a vampire’s heart with enough strength to make it feel alive and beating.",
 ];

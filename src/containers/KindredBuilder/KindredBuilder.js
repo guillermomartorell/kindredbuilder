@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import Auxiliary from "../../hoc/Auxiliary/Auxiliary";
 import Kindred from "../../components/Kindred/Kindred";
 import BuildControls from "../../components/Kindred/BuildControls/BuildControls";
-// import { BsFillDropletFill } from "react-icons/bs";
+
 import Modal from "../../components/UI/Modal/Modal";
 import SaveSummary from "../../components/Kindred/SaveSummary/SaveSummary";
 import Spinner from "../../components/UI/Spinner/Spinner";
@@ -16,9 +16,7 @@ import axios from "../../axios-saved";
 
 const KindredBuilder = props => {
   const [saving, setSaving] = useState(false);
-  // const [pointRating, setPointRating] = useState(null);
-  // const [hoverRating, setHoverRating] = useState(null);
-
+  
   const { onInitAttributes } = props;
   useEffect(() => {
     onInitAttributes();
@@ -71,17 +69,20 @@ const KindredBuilder = props => {
   if (props.atr) {
     kindred = (
       <Auxiliary>
-        <Kindred attributes={props.atr} />
+        
         <BuildControls
-          attributesAdded={props.onAttributeAdded}
-          attributesRemoved={props.onAttributeRemoved}
-          disabledMin={disabledInfoMin}
-          disabledMax={disabledInfoMax}
+          attributes={props.atr} 
+          // attributesAdded={props.onAttributeAdded}
+          // attributesRemoved={props.onAttributeRemoved}
+          attributeValue={props.onSetAttributeValue}
+          // disabledMin={disabledInfoMin}
+          // disabledMax={disabledInfoMax}
           savable={updateSaveState(props.atr)}
           saving={saveHandler}
           availablePoints={props.points}
-          isAuth={props.isAuth}
+          // isAuth={props.isAuth}
         />
+        <Kindred attributes={props.atr} />
       </Auxiliary>
     );
     saveSummary = (
@@ -116,6 +117,7 @@ const mapDispatchToProps = dispatch => {
   return {
     onAttributeAdded: atName => dispatch(actions.addAttributes(atName)),
     onAttributeRemoved: atName => dispatch(actions.removeAttributes(atName)),
+    onSetAttributeValue: (atName, pointValue) => dispatch(actions.setAttributeValue(atName, pointValue)),
     onInitAttributes: () => dispatch(actions.initAttributes()),
     onInitSave: () => dispatch(actions.saveInit()),
     onSetAuthRedirectPath: path => dispatch(actions.setAuthRedirectPath(path)),

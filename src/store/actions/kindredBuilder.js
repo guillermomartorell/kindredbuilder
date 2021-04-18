@@ -15,6 +15,15 @@ export const removeAttributes = name => {
   };
 };
 
+export const setAttributeValue = (name, value) => {
+  // console.log(name, value)
+  return {
+    type: actionTypes.SET_ATTRIBUTES_VALUE,
+    attributeName: name,
+    attributeValue: value,
+  };
+};
+
 export const setAttributes = attributes => {
   return {
     type: actionTypes.SET_ATTRIBUTES,
@@ -23,20 +32,21 @@ export const setAttributes = attributes => {
 };
 
 export const fetchAttributesFailed = () => {
-    return {
-        type: actionTypes.FETCH_ATTRIBUTES_FAILED,
-    }
-}
+  return {
+    type: actionTypes.FETCH_ATTRIBUTES_FAILED,
+  };
+};
 
 export const initAttributes = () => {
   return dispatch => {
     axios
-    .get("https://react-kindred-default-rtdb.firebaseio.com/attributes.json")
-    .then(response => {
-      dispatch(setAttributes(response.data))
-    })
-    .catch(error => {
-     dispatch(fetchAttributesFailed())
-    })
+      .get("https://react-kindred-default-rtdb.firebaseio.com/attributes.json")
+      .then(response => {
+        console.log(response.data);
+        dispatch(setAttributes(response.data));
+      })
+      .catch(error => {
+        dispatch(fetchAttributesFailed());
+      });
   };
 };
