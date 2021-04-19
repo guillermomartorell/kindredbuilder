@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 
 import classes from "./BuildControls.module.css";
 import BuildControl from "./BuildControl/BuildControl";
+import atrDesc from "../KindredAttributes/attributes";
 
 const controls = [
   { label: "Strength", type: "str" },
@@ -18,13 +19,33 @@ const controls = [
 
 const BuildControls = props => {
   const [pointValue, setPointValue] = useState(1);
-  // const atType = Object.entries(props.atr);
-  // console.log(atType);
+  const [hoverValue, setHoverValue] = useState(1);
+  const [hoverTitle, setHoverTitle] = useState(null);
+  const [hoverDesc, setHoverDesc] = useState(null);
+
+  const atEntries = Object.entries(atrDesc);
+  // let atValue = atEntries.map((at, i) => {
+  //   return props.type === atEntries[i][0] ? atEntries[i][1][props.val] : null;
+  // });
+  // let atTitle = atEntries.map((at, i) => {
+  //   return props.type === atEntries[i][0] ? atEntries[i][1][0] : null;
+  // });
+  const hoverValueHandler = (value, type) => {
+    setHoverValue(value);
+    let atTitle = atEntries.map((at, i) => {
+      return type === atEntries[i][0] ? atEntries[i][1][0] : null;
+    });
+    let atValue = atEntries.map((at, i) => {
+      return type === atEntries[i][0] ? atEntries[i][1][value] : null;
+    });
+    setHoverTitle(atTitle);
+    setHoverDesc(atValue);
+  };
   return (
     <div className={classes.BuildControlsWrapper}>
-      <p>
+      {/* <p>
         Current Availabe Points: <strong>{props.availablePoints}</strong>
-      </p>
+      </p> */}
       <div className={classes.BuildControlsContainer}>
         {controls.map(ctrl => (
           <div
@@ -34,7 +55,11 @@ const BuildControls = props => {
             <strong>{ctrl.label}</strong>
             <BuildControl
               passedPointValue={pointValue => setPointValue(pointValue)}
-
+              atr={props.atr}
+              type={ctrl.type}
+              passedHoverValue={(hoverValue, type) =>
+                hoverValueHandler(hoverValue, type)
+              }
               // added={() => props.attributesAdded(ctrl.type)}
               // removed={() => props.attributesRemoved(ctrl.type)}
               // attributeValue={ () => props.attributeValue(ctrl.type, pointValue)}
@@ -51,7 +76,10 @@ const BuildControls = props => {
       >
         {props.isAuth ? "SAVE NOW" : "Log In to Save"}
       </button>
-      <p>Point is : {pointValue}</p>
+      {/* <p>Hover Value: {hoverValue}</p> */}
+      <p>----</p>
+      <strong>{hoverTitle}</strong>
+      <p>{hoverDesc}</p>
     </div>
   );
 };

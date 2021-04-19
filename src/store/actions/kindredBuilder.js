@@ -42,7 +42,6 @@ export const initAttributes = () => {
     axios
       .get("https://react-kindred-default-rtdb.firebaseio.com/attributes.json")
       .then(response => {
-        console.log(response.data);
         dispatch(setAttributes(response.data));
       })
       .catch(error => {

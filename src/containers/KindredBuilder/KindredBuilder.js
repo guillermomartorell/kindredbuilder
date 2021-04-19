@@ -82,7 +82,7 @@ const KindredBuilder = props => {
           availablePoints={props.points}
           // isAuth={props.isAuth}
         />
-        <Kindred attributes={props.atr} />
+        {/* <Kindred attributes={props.atr} /> */}
       </Auxiliary>
     );
     saveSummary = (

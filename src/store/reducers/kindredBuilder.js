@@ -8,11 +8,11 @@ const initialState = {
   building: false,
 };
 
-const ATTRIBUTES_PRICES = {
-  str: 1,
-  dex: 1,
-  sta: 1,
-};
+// const ATTRIBUTES_PRICES = {
+//   str: 1,
+//   dex: 1,
+//   sta: 1,
+// };
 
 const addAttribute = (state, action) => {
   const updatedAttribute = {
@@ -21,8 +21,8 @@ const addAttribute = (state, action) => {
   const updatedAttributes = updateObject(state.attributes, updatedAttribute);
   const updatedState = {
     attributes: updatedAttributes,
-    availablePoints:
-      state.availablePoints - ATTRIBUTES_PRICES[action.attributeName],
+    availablePoints: state.availablePoints,
+    // - ATTRIBUTES_PRICES[action.attributeName]
     building: true,
   };
   return updateObject(state, updatedState);
@@ -35,8 +35,8 @@ const removeAttribute = (state, action) => {
   const updatedAtts = updateObject(state.attributes, updatedAtt);
   const updatedSt = {
     attributes: updatedAtts,
-    availablePoints:
-      state.availablePoints - ATTRIBUTES_PRICES[action.attributeName],
+    availablePoints: state.availablePoints,
+    // - ATTRIBUTES_PRICES[action.attributeName]
     building: true,
   };
   return updateObject(state, updatedSt);
@@ -51,15 +51,14 @@ const setAttributes = (state, action) => {
   });
 };
 const setAttributeValue = (state, action) => {
-  console.log(action.attributeValue)
   const updatedAttribute = {
-    [action.attributeName]: action.attributeValue
+    [action.attributeName]: action.attributeValue,
   };
   const updatedAttributes = updateObject(state.attributes, updatedAttribute);
   const updatedState = {
     attributes: updatedAttributes,
-    availablePoints:
-      state.availablePoints - ATTRIBUTES_PRICES[action.attributeName],
+    availablePoints: state.availablePoints,
+    // - ATTRIBUTES_PRICES[action.attributeName]
     building: true,
   };
   return updateObject(state, updatedState);

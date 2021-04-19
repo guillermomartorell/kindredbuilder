@@ -3,17 +3,14 @@ import PropTypes from "prop-types";
 import att from "./attributes.js";
 
 const KindredAttributes = props => {
-  
   const atEntries = Object.entries(att);
-  console.log(atEntries)
-  let atValue = atEntries.map((at,i) => {
-    return props.type === atEntries[i][0] ?  atEntries[i][1][props.val] : null
-  })
-  let atTitle = atEntries.map((at,i) => {
-    return props.type === atEntries[i][0] ?  atEntries[i][1][0]: null
-  })
-  console.log(atTitle)
-  
+  let atValue = atEntries.map((at, i) => {
+    return props.type === atEntries[i][0] ? atEntries[i][1][props.val] : null;
+  });
+  let atTitle = atEntries.map((at, i) => {
+    return props.type === atEntries[i][0] ? atEntries[i][1][0] : null;
+  });
+
   // let atName;
   // let atValue;
   // switch (props.type) {
@@ -35,7 +32,7 @@ const KindredAttributes = props => {
   let attributes = (
     <div>
       <strong>{atTitle}:</strong>
-      <div>{atValue }</div>
+      <div>{atValue}</div>
     </div>
   );
   return attributes;

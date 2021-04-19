@@ -5,6 +5,12 @@ import { BsFillDropletFill } from "react-icons/bs";
 const BuildControl = props => {
   const [pointRating, setPointRating] = useState(1);
   const [hoverRating, setHoverRating] = useState(1);
+
+  const hoverHandler = receivedValue => {
+    setHoverRating(receivedValue);
+    console.log(receivedValue);
+    props.passedHoverValue(receivedValue, props.type);
+  };
   return (
     <div>
       {[...Array(5)].map((_, i) => {
@@ -24,7 +30,7 @@ const BuildControl = props => {
               color={
                 pointValue <= (hoverRating || pointRating) ? " #8a0303" : "grey"
               }
-              onMouseEnter={() => setHoverRating(pointValue)}
+              onMouseEnter={() => hoverHandler(pointValue)}
               onMouseLeave={() => setHoverRating(null)}
               onClick={() => props.passedPointValue(pointValue)}
               size={20}

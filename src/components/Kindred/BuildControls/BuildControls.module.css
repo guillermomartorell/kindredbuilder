@@ -13,6 +13,7 @@
     grid-template-columns: 33% 33% 33%;
     grid-template-rows: 33% 33% 33%;
     grid-auto-flow: column;
+    text-align: center;
 }
 .BuildControlsContainer > :nth-child(n){
     width: 33vw;
