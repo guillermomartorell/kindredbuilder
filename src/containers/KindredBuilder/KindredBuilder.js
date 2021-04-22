@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 
 import Auxiliary from "../../hoc/Auxiliary/Auxiliary";
-import Kindred from "../../components/Kindred/Kindred";
 import BuildControls from "../../components/Kindred/BuildControls/BuildControls";
-
 import Modal from "../../components/UI/Modal/Modal";
 import SaveSummary from "../../components/Kindred/SaveSummary/SaveSummary";
 import Spinner from "../../components/UI/Spinner/Spinner";
@@ -82,7 +80,6 @@ const KindredBuilder = props => {
           availablePoints={props.points}
           // isAuth={props.isAuth}
         />
-        {/* <Kindred attributes={props.atr} /> */}
       </Auxiliary>
     );
     saveSummary = (

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-// import classes from "./BuildControl.module.css";
 import { BsFillDropletFill } from "react-icons/bs";
 
 const BuildControl = props => {

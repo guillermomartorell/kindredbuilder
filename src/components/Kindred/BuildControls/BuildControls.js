@@ -12,12 +12,12 @@ const BuildControls = props => {
   const [hoverDesc, setHoverDesc] = useState(null);
 
   const hoverValueHandler = (value, type) => {
-    setHoverValue(value);
-    let atTitle = atObj.map((ctrl, i) => {
+    setHoverValue(hoverValue);
+    const atTitle = atObj.map(ctrl => {
       return type === ctrl.type ? ctrl.label : null;
     });
-    let atValue = atObj.map((ctrl, i) => {
-      return type === ctrl.type ? ctrl.val[value - 1] : null;
+    const atValue = atObj.map(ctrl => {
+     return type === ctrl.type ? ctrl.val[value - 1] : null;
     });
     setHoverTitle(atTitle);
     setHoverDesc(atValue);
@@ -47,7 +47,11 @@ const BuildControls = props => {
           </div>
         ))}
       </div>
-      <p><br/>----<br/></p>
+      <p>
+        <br />
+        ----
+        <br />
+      </p>
       <button
         className={classes.SaveButton}
         disabled={props.savable}
@@ -55,7 +59,11 @@ const BuildControls = props => {
       >
         {props.isAuth ? "SAVE NOW" : "Log In to Save"}
       </button>
-      <p><br/>----<br/></p>
+      <p>
+        <br />
+        ----
+        <br />
+      </p>
       <strong>{hoverTitle}</strong>
       <p>{hoverDesc}</p>
     </div>
