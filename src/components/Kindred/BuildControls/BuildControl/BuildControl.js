@@ -8,7 +8,6 @@ const BuildControl = props => {
 
   const hoverHandler = receivedValue => {
     setHoverRating(receivedValue);
-    console.log(receivedValue);
     props.passedHoverValue(receivedValue, props.type);
   };
   return (
