@@ -4,17 +4,13 @@ import Auxiliary from "../../../hoc/Auxiliary/Auxiliary";
 import Backdrop from "../Backdrop/Backdrop";
 
 const Modal = props => {
-  // shouldComponentUpdate(nextProps, nextState){
-  //     return nextProps.show !== props.show || nextProps.children !== props.children
-  //   }
-
   return (
     <Auxiliary>
       <Backdrop show={props.show} clicked={props.modalClosed} />
       <div
         className={claseses.Modal}
         style={{
-          transform: props.show ? "translateY(0)" : "translateY(-100vh)",
+          transform: props.show ? "translateY(-20vh)" : "translateY(-100vh)",
           opacity: props.show ? "1" : "0",
         }}
       >
@@ -26,5 +22,6 @@ const Modal = props => {
 export default React.memo(
   Modal,
   (prevProps, nextProps) =>
-    nextProps.show === prevProps.show && nextProps.children === prevProps.children
+    nextProps.show === prevProps.show &&
+    nextProps.children === prevProps.children
 );
