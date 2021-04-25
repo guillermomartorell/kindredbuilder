@@ -6,7 +6,7 @@
   align-items: center;
 }
 .NavigationItem a {
-  color: #8f5c2c;
+  color: #2C3A3D;
   text-decoration: none;
   width: 100%;
   box-sizing: border-box;
@@ -16,7 +16,7 @@
 .NavigationItem a:active,
 .NavigationItem a.active {
   
-  color: lightblue;
+  color: #badadc;
 }
 
 @media(min-width: 500px){
