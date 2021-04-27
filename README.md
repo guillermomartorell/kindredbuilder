@@ -1,4 +1,6 @@
-# Getting Started with Create React App
+# KindredBuilder powered by CRA
+
+Live Demo @ https://react-kindred.web.app/ hosting by Firebase
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
