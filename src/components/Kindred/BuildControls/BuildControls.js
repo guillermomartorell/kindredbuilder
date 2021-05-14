@@ -75,11 +75,6 @@ const BuildControls = props => {
         <div
           className={`${classes.BuildControlsWrapper} ${classes.statDisplay}`}
         >
-          <p>
-            <br />
-            ----
-            <br />
-          </p>
           <strong>{hoverTitle}</strong>
           <p>{hoverDesc}</p>
         </div>
