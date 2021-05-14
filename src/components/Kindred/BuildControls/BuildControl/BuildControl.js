@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { BsFillDropletFill } from "react-icons/bs";
 
 const BuildControl = props => {
-  const [pointRating, setPointRating] = useState(1);
-  const [hoverRating, setHoverRating] = useState(1);
+  const [pointRating, setPointRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
 
   const hoverHandler = receivedValue => {
     setHoverRating(receivedValue);

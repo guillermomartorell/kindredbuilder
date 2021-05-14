@@ -3,7 +3,6 @@ import { updateObject } from "../../shared/utility";
 
 const initialState = {
   attributes: null,
-  availablePoints: 7,
   error: false,
   building: false,
 };
@@ -21,8 +20,6 @@ const addAttribute = (state, action) => {
   const updatedAttributes = updateObject(state.attributes, updatedAttribute);
   const updatedState = {
     attributes: updatedAttributes,
-    availablePoints: state.availablePoints,
-    // - ATTRIBUTES_PRICES[action.attributeName]
     building: true,
   };
   return updateObject(state, updatedState);
@@ -35,8 +32,6 @@ const removeAttribute = (state, action) => {
   const updatedAtts = updateObject(state.attributes, updatedAtt);
   const updatedSt = {
     attributes: updatedAtts,
-    availablePoints: state.availablePoints,
-    // - ATTRIBUTES_PRICES[action.attributeName]
     building: true,
   };
   return updateObject(state, updatedSt);
@@ -45,7 +40,6 @@ const removeAttribute = (state, action) => {
 const setAttributes = (state, action) => {
   return updateObject(state, {
     attributes: action.attributes,
-    availablePoints: 7,
     error: false,
     building: false,
   });
@@ -57,8 +51,6 @@ const setAttributeValue = (state, action) => {
   const updatedAttributes = updateObject(state.attributes, updatedAttribute);
   const updatedState = {
     attributes: updatedAttributes,
-    availablePoints: state.availablePoints,
-    // - ATTRIBUTES_PRICES[action.attributeName]
     building: true,
   };
   return updateObject(state, updatedState);

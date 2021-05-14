@@ -14,22 +14,11 @@ import axios from "../../axios-saved";
 
 const KindredBuilder = props => {
   const [saving, setSaving] = useState(false);
-  
+
   const { onInitAttributes } = props;
   useEffect(() => {
     onInitAttributes();
   }, [onInitAttributes]);
-
-  const updateSaveState = attributes => {
-    const sum = Object.keys(attributes)
-      .map(atKey => {
-        return attributes[atKey];
-      })
-      .reduce((sum, el) => {
-        return sum + el;
-      }, 0);
-    return sum === 10;
-  };
 
   const saveHandler = () => {
     if (props.isAuth) {
@@ -49,36 +38,17 @@ const KindredBuilder = props => {
     props.history.push("/saved");
   };
 
-  const disabledInfoMin = {
-    ...props.atr,
-  };
-  for (let key in disabledInfoMin) {
-    disabledInfoMin[key] = disabledInfoMin[key] <= 1;
-  }
-  const disabledInfoMax = {
-    ...props.atr,
-  };
-  for (let key in disabledInfoMax) {
-    disabledInfoMax[key] = disabledInfoMax[key] >= 5;
-  }
   let saveSummary = null;
   let kindred = props.error ? <p>Sorry this app isn't working</p> : <Spinner />;
 
   if (props.atr) {
     kindred = (
       <Auxiliary>
-        
         <BuildControls
-          attributes={props.atr} 
-          // attributesAdded={props.onAttributeAdded}
-          // attributesRemoved={props.onAttributeRemoved}
+          attributes={props.atr}
           attributeValue={props.onSetAttributeValue}
-          // disabledMin={disabledInfoMin}
-          // disabledMax={disabledInfoMax}
-          savable={updateSaveState(props.atr)}
           saving={saveHandler}
-          availablePoints={props.points}
-          // isAuth={props.isAuth}
+          isAuth={props.isAuth}
         />
       </Auxiliary>
     );
@@ -104,7 +74,6 @@ const KindredBuilder = props => {
 const mapStateToProps = state => {
   return {
     atr: state.kindredBuilder.attributes,
-    points: state.kindredBuilder.availablePoints,
     error: state.kindredBuilder.error,
     isAuth: state.auth.token !== null,
   };
@@ -112,9 +81,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onAttributeAdded: atName => dispatch(actions.addAttributes(atName)),
-    onAttributeRemoved: atName => dispatch(actions.removeAttributes(atName)),
-    onSetAttributeValue: (atName, pointValue) => dispatch(actions.setAttributeValue(atName, pointValue)),
+    onSetAttributeValue: (atName, pointValue) =>
+      dispatch(actions.setAttributeValue(atName, pointValue)),
     onInitAttributes: () => dispatch(actions.initAttributes()),
     onInitSave: () => dispatch(actions.saveInit()),
     onSetAuthRedirectPath: path => dispatch(actions.setAuthRedirectPath(path)),
